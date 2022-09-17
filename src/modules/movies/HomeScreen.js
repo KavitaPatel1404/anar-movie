@@ -1,31 +1,30 @@
 import axios from 'axios';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
+  Button,
   FlatList,
+  StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
-  Button,
-  Image,
+  View,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
-import Constants from '../Constants';
+import Constants from '../../Constants';
+import MovieCard from './MovieCard';
 
 const {
-  REQ_STATUS: {INIT, LOADING, API_SUCCESS, SUCCESS, ERROR},
+  REQ_STATUS: {INIT, LOADING, API_SUCCESS, ERROR},
 } = Constants;
 
 const HomeScreen = () => {
   const [text, setText] = useState('');
   const [searchStatus, setSearchStatus] = useState(INIT);
   const [data, setData] = useState([]);
-  console.log('data: ', data);
 
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -36,8 +35,6 @@ const HomeScreen = () => {
       axios
         .get(`https://www.omdbapi.com/?apikey=4dad5ea8&type=movie&s=${text}`)
         .then(res => {
-          console.log('res: ', res.data);
-          console.log('res.data.response: ', res.data.Response);
           if (res.data.Response) {
             setData(res.data.Search);
           }
@@ -53,25 +50,7 @@ const HomeScreen = () => {
   };
 
   const renderMovie = ({item}) => {
-    const {Title, Poster, Year} = item;
-    return (
-      <View style={styles.verticalListItem}>
-        <View
-          style={{
-            height: wp(30),
-            width: '100%',
-          }}>
-          <Image source={{uri: Poster}} style={styles.productImage} />
-        </View>
-        <Text
-          style={{
-            marginTop: wp(2),
-          }}>
-          {Title}
-        </Text>
-        <Text style={{marginTop: wp(2)}}>{Year}</Text>
-      </View>
-    );
+    return <MovieCard movie={item} />;
   };
 
   const renderEmptyComponent = () => {
@@ -88,6 +67,7 @@ const HomeScreen = () => {
           allowFontScaling={false}
           value={text}
           autoCapitalize={true}
+          onSubmitEditing={onPressSearch}
         />
         {!!text && (
           <TouchableOpacity
@@ -101,15 +81,13 @@ const HomeScreen = () => {
 
       <Button title="Search" onPress={onPressSearch} />
       <FlatList
+        style={{paddingBottom: hp(10)}}
         data={data}
-        // style={{marginHorizontal: utils.size(16)}}
         columnWrapperStyle={styles.justifySpaceBtwn}
         numColumns={2}
         renderItem={renderMovie}
         keyExtractor={(item, index) => item.imdbID}
         showsVerticalScrollIndicator={false}
-        // ItemSeparatorComponent={renderSepartor}
-        // ListFooterComponent={renderListFooter}
         ListEmptyComponent={renderEmptyComponent}
       />
     </View>
@@ -150,6 +128,12 @@ const styles = StyleSheet.create({
     height: wp(30),
     width: '100%',
     resizeMode: 'contain',
+  },
+  bottomContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
 });
 
