@@ -17,7 +17,11 @@ const ShortlistedMovies = () => {
   const renderEmptyComponent = () => {
     return (
       <View style={styles.emptyContainer}>
-        <EmptyList height={wp(70)} width={wp(70)} style={{marginLeft: wp(8)}} />
+        <EmptyList
+          height={wp(70)}
+          width={wp(70)}
+          style={{marginLeft: wp(10)}}
+        />
         <Text style={{fontWeight: '600', fontSize: 16}}>
           No movies Shortlisted
         </Text>

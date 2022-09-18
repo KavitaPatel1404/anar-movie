@@ -13,7 +13,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {EmptyList} from '../../assets/images';
+import {EmptyList, Search} from '../../assets/images';
 import Constants from '../../Constants';
 import MovieCard from './MovieCard';
 
@@ -69,7 +69,9 @@ const HomeScreen = () => {
       case API_SUCCESS:
         return (
           <View style={styles.emptyContainer}>
-            <Text style={{fontWeight: '600', fontSize: 16}}>No data found</Text>
+            <Text style={{fontWeight: '600', fontSize: 16}}>
+              No result found
+            </Text>
           </View>
         );
 
@@ -79,7 +81,7 @@ const HomeScreen = () => {
             <EmptyList
               height={wp(70)}
               width={wp(70)}
-              style={{marginLeft: wp(8)}}
+              style={{marginLeft: wp(10)}}
             />
             <Text style={{fontWeight: '600', fontSize: 16}}>
               Search to find your favourite movies!
@@ -113,11 +115,11 @@ const HomeScreen = () => {
             hitSlop={{top: wp(3), bottom: wp(3), left: wp(3), right: wp(5)}}
             onPress={() => setText('')}
             style={{marginRight: wp(4)}}>
-            <Text>x</Text>
+            <Text style={{fontSize: 16}}>x</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity onPress={onPressSearch} style={styles.search}>
-          <Text style={{color: '#fff'}}>Search</Text>
+          <Search height={wp(5)} width={wp(5)} fill={'#fff'} />
         </TouchableOpacity>
       </View>
       {showError && <Text style={styles.errText}>{errorMessage}</Text>}
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#453F62',
     borderRadius: wp(2),
-    height: hp(8),
+    height: hp(6.5),
     maxHeight: 60,
     paddingLeft: wp(4),
     paddingRight: wp(2),
@@ -172,9 +174,9 @@ const styles = StyleSheet.create({
   justifySpaceBtwn: {justifyContent: 'space-between'},
   search: {
     backgroundColor: '#6661d2',
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    borderRadius: wp(8),
+    paddingVertical: wp(2),
+    paddingHorizontal: wp(2),
   },
   emptyContainer: {
     marginTop: '20%',
